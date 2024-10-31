@@ -6,6 +6,15 @@
     <title>Main page</title>
 </head>
 <body>
-    <p>6678</p>
+    <form action="/" method="post">
+        <input type="text" name="name" id="name" placeholder="name">
+        <input type="text" name="email" id="email" placeholder="email">
+
+        <% if (error) { %>
+            <p class="error-message"><%=error %></p>
+        <% } %>
+
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
