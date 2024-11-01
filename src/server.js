@@ -23,24 +23,55 @@ app.get('/', (req, res) => {
 	res.render('index', context)
 })
 
+app.get('/user/', async (req, res) => {
+	context = {}
+
+	context.error = null
+
+	res.render('user', context)
+})
+
 app.post('/',  async (req, res) => {
 	context = {}
 
-	const {name, email} = req.body
+	const {name, email, action} = req.body
 
-	if (!name || !email) {
-		context.error = "Fill all inputs!"
-	} else {
-		const user = await prisma.user.create({
-			data: {
-				name: name,
-				email: email
-			}
-		})
-		context.error = null
+	if (action === 'addUser') {
+		if (!name || !email) {
+			context.error = "Fill all inputs!"
+		} else {
+			const user = await prisma.user.create({
+				data: {
+					name: name,
+					email: email
+				}
+			})
+			context.error = null
+		}
 	}
 
     res.render('index', context)
+})
+
+app.post('/user/',  async (req, res) => {
+	context = {}
+
+	const {name, action} = req.body
+
+	if (action === 'deleteUser') {
+		if (!name) {
+			context.error = "Fill all inputs!"
+		} else {
+			const user = await prisma.user.deleteMany({
+				where: {
+					name: name
+				}
+			})
+			context.error = null
+		}
+	}
+
+    res.render('user', context)
 })
 
 app.listen(PORT, HOST, () => {
